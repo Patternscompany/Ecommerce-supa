@@ -30,6 +30,10 @@ export const AuthProvider = ({ children }) => {
     redirectTo: `${window.location.origin}/reset-password`,
   });
   const updatePassword = (new_password) => supabase.auth.updateUser({ password: new_password });
+  const resendVerification = (email) => supabase.auth.resend({
+    type: 'signup',
+    email: email,
+  });
 
   const value = {
     signUp,
@@ -37,6 +41,7 @@ export const AuthProvider = ({ children }) => {
     signOut,
     resetPassword,
     updatePassword,
+    resendVerification,
     user,
     loading
   };

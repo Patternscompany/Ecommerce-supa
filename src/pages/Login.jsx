@@ -8,8 +8,21 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const { signIn, resendVerification } = useAuth();
   const navigate = useNavigate();
+
+  const handleResend = async () => {
+    if (!email) {
+      toast.error('ENTER EMAIL FIRST');
+      return;
+    }
+    const { error } = await resendVerification(email);
+    if (error) {
+      toast.error(error.message.toUpperCase());
+    } else {
+      toast.success('VERIFICATION DISPATCHED');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,7 +80,14 @@ const Login = () => {
                 />
                 <Lock className="absolute left-4 top-4.5 text-gray-400 w-4 h-4" />
               </div>
-              <div className="text-right">
+              <div className="text-right flex justify-between items-center">
+                <button 
+                  type="button"
+                  onClick={handleResend}
+                  className="text-[10px] font-bold text-gray-400 uppercase tracking-widest hover:text-black transition-all"
+                >
+                  Resend Email?
+                </button>
                 <Link to="/forgot-password" size="sm" className="text-[10px] font-bold text-gray-400 uppercase tracking-widest hover:text-black hover:line-through transition-all">
                   Forgot Password?
                 </Link>
