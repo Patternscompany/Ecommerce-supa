@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #000000;
+  --color-secondary: #ffffff;
+  --color-accent: #333333;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  font-family: var(--font-sans);
+}
+
+body {
+  @apply bg-white text-black;
+}
+
+/* Custom scrollbar - Monochromatic */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-white;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-black rounded-none;
+}
+
+/* Global transitions */
+* {
+  @apply transition-colors duration-200;
+}
