@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Search, LogOut, Menu, X } from 'lucide-react';
+import { ShoppingCart, Search, Menu, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
 const Navbar = () => {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const { cartCount } = useCart();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,18 +56,11 @@ const Navbar = () => {
             </Link>
 
             {user ? (
-              <div className="flex items-center space-x-4">
-                <Link to="/dashboard" className="text-black hover:scale-110 transition-transform">
-                  <User className="w-5 h-5" />
-                </Link>
-                <button
-                  onClick={signOut}
-                  className="hidden sm:block text-black hover:text-gray-500"
-                  title="Logout"
-                >
-                  <LogOut className="w-5 h-5" />
-                </button>
-              </div>
+              <Link to="/dashboard" className="flex items-center">
+                <div className="w-8 h-8 bg-black text-white flex items-center justify-center font-black text-sm uppercase transition-transform hover:scale-110">
+                  {user?.email[0]}
+                </div>
+              </Link>
             ) : (
               <Link
                 to="/login"
@@ -110,15 +103,9 @@ const Navbar = () => {
             Laptops
           </Link>
           {user && (
-            <button
-              onClick={() => {
-                signOut();
-                setIsMenuOpen(false);
-              }}
-              className="w-full text-left text-gray-500 font-bold uppercase text-sm tracking-widest"
-            >
-              Logout
-            </button>
+            <Link to="/dashboard" className="block text-xl font-black uppercase tracking-tighter" onClick={() => setIsMenuOpen(false)}>
+              My Dashboard
+            </Link>
           )}
         </div>
       )}
