@@ -76,7 +76,8 @@ const Dashboard = () => {
     e.preventDefault();
     const { error } = await supabase.from('products').insert([newProduct]);
     if (error) {
-      toast.error('FAILED TO ADD PRODUCT');
+      console.error('Add Product Error:', error);
+      toast.error(`FAILED: ${error.message.toUpperCase()}`);
     } else {
       toast.success('PRODUCT ADDED TO ARCHIVE');
       setNewProduct({ name: '', price: '', category: 'Mobiles', description: '', image_url: '', stock: '' });
