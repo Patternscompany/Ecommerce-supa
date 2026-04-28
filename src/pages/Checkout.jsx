@@ -69,6 +69,9 @@ const Checkout = () => {
                 user_id: user.id,
                 total: cartTotal,
                 status: 'paid',
+                shipping_address: `${formData.name}, ${formData.address}, ${formData.city}, ${formData.zip}. Contact: ${formData.phone}`,
+                payment_method: 'Razorpay',
+                transaction_id: response.razorpay_payment_id
               },
             ])
             .select()
