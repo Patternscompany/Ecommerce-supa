@@ -11,7 +11,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('orders');
   const [isAdmin, setIsAdmin] = useState(false);
-  
+
   const [newProduct, setNewProduct] = useState({
     name: '', price: '', category: 'Mobiles', description: '', image_url: '', stock: ''
   });
@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [selectedUserOrders, setSelectedUserOrders] = useState([]);
-  
+
   // Inventory Management State
   const [inventory, setInventory] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -39,7 +39,7 @@ const Dashboard = () => {
         .select('role')
         .eq('id', user.id)
         .single();
-      
+
       if (profile?.role === 'admin') {
         setIsAdmin(true);
       }
@@ -94,7 +94,7 @@ const Dashboard = () => {
 
   const handleDeleteProduct = async (id) => {
     if (!window.confirm('PERMANENTLY REMOVE FROM ARCHIVE?')) return;
-    
+
     const { error } = await supabase
       .from('products')
       .delete()
@@ -125,7 +125,7 @@ const Dashboard = () => {
 
   const handleDeleteUser = async (userId) => {
     if (!window.confirm('PERMANENTLY REMOVE USER PROFILE?')) return;
-    
+
     const { error } = await supabase
       .from('profiles')
       .delete()
@@ -147,7 +147,7 @@ const Dashboard = () => {
       .select(`*, order_items (*, products (*))`)
       .eq('user_id', targetUser.id)
       .order('created_at', { ascending: false });
-    
+
     setViewingUser({ ...targetUser, orders: data || [] });
     setLoading(false);
   };
@@ -165,7 +165,7 @@ const Dashboard = () => {
       .select(`*, order_items (*, products (*))`)
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
-    
+
     setSelectedUserId(userId);
     setSelectedUserOrders(data || []);
   };
@@ -202,7 +202,7 @@ const Dashboard = () => {
             </p>
 
             <nav className="space-y-4">
-              <button 
+              <button
                 onClick={() => setActiveTab('orders')}
                 className={`w-full flex items-center justify-between p-4 text-[10px] font-black uppercase tracking-widest border transition-all ${activeTab === 'orders' ? 'bg-black text-white border-black' : 'border-transparent hover:border-black'}`}
               >
@@ -218,7 +218,7 @@ const Dashboard = () => {
                   <div className="pt-6 pb-2 px-4 border-t border-gray-100 mt-6">
                     <p className="text-[9px] font-black text-gray-300 uppercase tracking-[0.3em]">ADMIN PANEL</p>
                   </div>
-                  <button 
+                  <button
                     onClick={fetchInventory}
                     className={`w-full flex items-center justify-between p-4 text-[10px] font-black uppercase tracking-widest border transition-all ${activeTab === 'admin-inventory' ? 'bg-black text-white border-black' : 'border-transparent hover:border-black'}`}
                   >
@@ -228,7 +228,7 @@ const Dashboard = () => {
                     </div>
                     <ChevronRight className="w-3 h-3" />
                   </button>
-                  <button 
+                  <button
                     onClick={() => setActiveTab('admin-products')}
                     className={`w-full flex items-center justify-between p-4 text-[10px] font-black uppercase tracking-widest border transition-all ${activeTab === 'admin-products' ? 'bg-black text-white border-black' : 'border-transparent hover:border-black'}`}
                   >
@@ -238,7 +238,7 @@ const Dashboard = () => {
                     </div>
                     <ChevronRight className="w-3 h-3" />
                   </button>
-                  <button 
+                  <button
                     onClick={fetchAllUsers}
                     className={`w-full flex items-center justify-between p-4 text-[10px] font-black uppercase tracking-widest border transition-all ${activeTab === 'admin-users' ? 'bg-black text-white border-black' : 'border-transparent hover:border-black'}`}
                   >
@@ -251,7 +251,7 @@ const Dashboard = () => {
                 </>
               )}
 
-              <button 
+              <button
                 onClick={signOut}
                 className="w-full flex items-center justify-between p-4 text-[10px] font-black uppercase tracking-widest border border-transparent text-gray-400 hover:text-black hover:border-black transition-all mt-12"
               >
@@ -287,7 +287,7 @@ const Dashboard = () => {
             <div className="space-y-12">
               <div className="flex justify-between items-end">
                 <h1 className="text-5xl font-black uppercase tracking-tighter">Add to Collection</h1>
-                <button 
+                <button
                   onClick={fetchInventory}
                   className="text-[10px] font-black uppercase tracking-widest border-b-2 border-black pb-1 hover:text-gray-500 hover:border-gray-500"
                 >
@@ -298,49 +298,49 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Product Name</label>
-                    <input 
+                    <input
                       required className="w-full border border-black p-4 text-xs font-bold uppercase tracking-widest focus:bg-black focus:text-white outline-none"
-                      value={newProduct.name} onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
+                      value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Price (INR)</label>
-                    <input 
+                    <input
                       required type="number" className="w-full border border-black p-4 text-xs font-bold uppercase tracking-widest focus:bg-black focus:text-white outline-none"
-                      value={newProduct.price} onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
+                      value={newProduct.price} onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
                     />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Category</label>
-                    <select 
+                    <select
                       className="w-full border border-black p-4 text-xs font-bold uppercase tracking-widest focus:bg-black focus:text-white outline-none"
-                      value={newProduct.category} onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
+                      value={newProduct.category} onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
                     >
                       <option>Mobiles</option><option>Laptops</option><option>Accessories</option>
                     </select>
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Stock Units</label>
-                    <input 
+                    <input
                       required type="number" className="w-full border border-black p-4 text-xs font-bold uppercase tracking-widest focus:bg-black focus:text-white outline-none"
-                      value={newProduct.stock} onChange={(e) => setNewProduct({...newProduct, stock: e.target.value})}
+                      value={newProduct.stock} onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Description</label>
-                  <textarea 
+                  <textarea
                     required className="w-full border border-black p-4 text-xs font-bold uppercase tracking-widest focus:bg-black focus:text-white outline-none"
-                    value={newProduct.description} onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
+                    value={newProduct.description} onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Image URL</label>
-                  <input 
+                  <input
                     required className="w-full border border-black p-4 text-xs font-bold uppercase tracking-widest focus:bg-black focus:text-white outline-none"
-                    value={newProduct.image_url} onChange={(e) => setNewProduct({...newProduct, image_url: e.target.value})}
+                    value={newProduct.image_url} onChange={(e) => setNewProduct({ ...newProduct, image_url: e.target.value })}
                   />
                 </div>
                 <button type="submit" className="bg-black text-white w-full py-5 font-black uppercase text-xs tracking-widest hover:bg-gray-800">
@@ -356,16 +356,16 @@ const Dashboard = () => {
                 <h1 className="text-5xl font-black uppercase tracking-tighter">Inventory</h1>
                 <div className="flex gap-4 w-full md:w-auto">
                   <div className="relative flex-grow">
-                    <input 
-                      type="text" 
-                      placeholder="SEARCH COLLECTION..." 
+                    <input
+                      type="text"
+                      placeholder="SEARCH COLLECTION..."
                       className="w-full border border-black p-3 pl-10 text-[10px] font-black uppercase tracking-widest outline-none focus:bg-gray-50"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                   </div>
-                  <button 
+                  <button
                     onClick={() => setActiveTab('admin-products')}
                     className="bg-black text-white px-6 py-3 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-gray-800"
                   >
@@ -395,10 +395,10 @@ const Dashboard = () => {
                             </div>
                             <div className="space-y-1">
                               {editingId === p.id ? (
-                                <input 
+                                <input
                                   className="border border-black p-2 text-[10px] font-black uppercase w-full outline-none"
                                   value={editForm.name}
-                                  onChange={(e) => setEditForm({...editForm, name: e.target.value})}
+                                  onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                                 />
                               ) : (
                                 <p className="font-black text-xs uppercase tracking-tighter">{p.name}</p>
@@ -412,17 +412,17 @@ const Dashboard = () => {
                             <div className="space-y-4">
                               <div className="flex gap-2 items-center">
                                 <span className="text-[9px] font-black text-gray-400">₹</span>
-                                <input 
+                                <input
                                   type="number"
                                   className="border border-black p-2 text-[10px] font-black uppercase w-24 outline-none"
                                   value={editForm.price}
-                                  onChange={(e) => setEditForm({...editForm, price: e.target.value})}
+                                  onChange={(e) => setEditForm({ ...editForm, price: e.target.value })}
                                 />
                               </div>
-                              <textarea 
+                              <textarea
                                 className="border border-black p-2 text-[9px] font-bold uppercase w-full h-20 outline-none"
                                 value={editForm.description}
-                                onChange={(e) => setEditForm({...editForm, description: e.target.value})}
+                                onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                               />
                             </div>
                           ) : (
@@ -434,11 +434,11 @@ const Dashboard = () => {
                         </td>
                         <td className="p-6 align-top">
                           {editingId === p.id ? (
-                            <input 
+                            <input
                               type="number"
                               className="border border-black p-2 text-[10px] font-black uppercase w-20 outline-none"
                               value={editForm.stock}
-                              onChange={(e) => setEditForm({...editForm, stock: e.target.value})}
+                              onChange={(e) => setEditForm({ ...editForm, stock: e.target.value })}
                             />
                           ) : (
                             <div className="inline-flex items-center px-3 py-1 bg-black text-white text-[9px] font-black uppercase tracking-widest">
@@ -450,14 +450,14 @@ const Dashboard = () => {
                           <div className="flex gap-3">
                             {editingId === p.id ? (
                               <>
-                                <button 
+                                <button
                                   onClick={handleUpdateProduct}
                                   className="p-2 bg-black text-white border border-black hover:bg-gray-800"
                                   title="Save Changes"
                                 >
                                   <Save className="w-4 h-4" />
                                 </button>
-                                <button 
+                                <button
                                   onClick={() => setEditingId(null)}
                                   className="p-2 border border-black hover:bg-gray-100"
                                   title="Cancel"
@@ -467,14 +467,14 @@ const Dashboard = () => {
                               </>
                             ) : (
                               <>
-                                <button 
+                                <button
                                   onClick={() => handleEditClick(p)}
                                   className="p-2 border border-black hover:bg-black hover:text-white transition-all"
                                   title="Edit Product"
                                 >
                                   <Edit className="w-4 h-4" />
                                 </button>
-                                <button 
+                                <button
                                   onClick={() => handleDeleteProduct(p.id)}
                                   className="p-2 border border-black hover:bg-red-500 hover:text-white hover:border-red-500 transition-all"
                                   title="Delete Product"
@@ -507,9 +507,9 @@ const Dashboard = () => {
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                     <h1 className="text-5xl font-black uppercase tracking-tighter">User Logistics</h1>
                     <div className="relative w-full md:w-80">
-                      <input 
-                        type="text" 
-                        placeholder="SEARCH USERS..." 
+                      <input
+                        type="text"
+                        placeholder="SEARCH USERS..."
                         className="w-full border border-black p-3 pl-10 text-[10px] font-black uppercase tracking-widest outline-none focus:bg-gray-50"
                         value={userSearchQuery}
                         onChange={(e) => setUserSearchQuery(e.target.value)}
@@ -548,7 +548,7 @@ const Dashboard = () => {
               ) : (
                 <div className="space-y-12">
                   <div className="flex items-center justify-between">
-                    <button 
+                    <button
                       onClick={() => setViewingUser(null)}
                       className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest hover:translate-x-[-4px] transition-transform"
                     >
@@ -557,7 +557,7 @@ const Dashboard = () => {
                     </button>
                     <div className="flex gap-4">
                       {viewingUser.role === 'client' ? (
-                        <button 
+                        <button
                           onClick={() => handleUpdateUserRole(viewingUser.id, 'admin')}
                           className="flex items-center gap-2 px-6 py-2 border border-black text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all"
                         >
@@ -565,7 +565,7 @@ const Dashboard = () => {
                           <span>Promote to Admin</span>
                         </button>
                       ) : (
-                        <button 
+                        <button
                           onClick={() => handleUpdateUserRole(viewingUser.id, 'client')}
                           className="flex items-center gap-2 px-6 py-2 border border-black text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all"
                         >
@@ -573,7 +573,7 @@ const Dashboard = () => {
                           <span>Demote to Client</span>
                         </button>
                       )}
-                      <button 
+                      <button
                         onClick={() => handleDeleteUser(viewingUser.id)}
                         className="flex items-center gap-2 px-6 py-2 border border-red-500 text-red-500 text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all"
                       >
@@ -593,7 +593,7 @@ const Dashboard = () => {
                           {viewingUser.email.split('@')[0]}
                         </h2>
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-8">{viewingUser.email}</p>
-                        
+
                         <div className="pt-8 border-t border-dashed border-gray-200 text-left space-y-4">
                           <div>
                             <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">ACCOUNT TYPE</p>
@@ -659,7 +659,7 @@ const OrderCard = ({ order }) => (
           </div>
         </div>
       ))}
-      
+
       {(order.shipping_address || order.transaction_id) && (
         <div className="pt-8 border-t border-black grid grid-cols-1 md:grid-cols-2 gap-8">
           {order.shipping_address && (
